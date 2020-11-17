@@ -67,6 +67,7 @@ public class BombermanGame extends Application {
             if (e.getCode().equals(KeyCode.RIGHT)) {
                 Bomber.check = 1;
                 System.out.println("Right");
+                System.out.print(timer);
 
             }
             if (e.getCode().equals(KeyCode.LEFT)) {

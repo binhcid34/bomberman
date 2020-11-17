@@ -10,7 +10,7 @@ public class Map1 {
     public static char level1Map[][] = new char[13][31];
     public static void insertFromFile() throws IOException {
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (3)\\bomberman-starter-starter-2\\res\\levels\\Level1.txt");
+            FileReader fileReader = new FileReader("D:\\Java-oop\\bomberman-starter-starter-2 (3)\\bomberman-starter-starter-2\\res\\levels\\Level1.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             bufferedReader.readLine();
             for (int i = 0; i < HEIGHT; i++) {

@@ -9,38 +9,65 @@ import uet.oop.bomberman.graphics.Map1;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomber extends Entity {
-   public static int check =0;
+    public static int check =0;
+    public static int step = 1;
+    public static int saiso = 2;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
-
     @Override
     public void update() {
        switch (check) {
            case 1:
                img = Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1,Sprite.player_right_2,
                        x,20).getFxImage();
-               if (x < 28 && Map1.level1Map[y][x+1] != '#' && Map1.level1Map[y][x+1] != '*')
-               x+=1;
+                System.out.println("(" + x+" " + y + ")");
+              if ( Map1.level1Map[(y+26)/32][(x+28)/32] == '.' &&Map1.level1Map[(y)/32][(x+28)/32] == '.') {
+                  x += step;
+                  int temp = y % 32;
+                  if (temp >= 20) y = ((y/32) + 1) *32;
+                  else if (temp <=10) y = (y/32) * 32;
+              }
+
                break;
            case 2:
                img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1,Sprite.player_left_2,
                        x, 20).getFxImage();
-               //if (x > 1 && Map1.level1Map[y][x-1] != '#' && Map1.level1Map[y][x-1] != '*') x--;
-               x-=3;
+               System.out.println("(" + x+" " + y + ")");
+               if (Map1.level1Map[(y+26)/32][(x-step)/32] == '.' ) {
+                   x-=step;
+                   int temp = y % 32;
+                   if (temp >= 20) y = ((y/32) + 1) *32;
+                   else if (temp <= 10) y = (y/32) * 32;
+               }
                break;
            case 3:
                img = Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1,Sprite.player_up_2,
                        y, 20).getFxImage();
-              // if (y > 1 && Map1.level1Map[y-1][x] != '#' && Map1.level1Map[y-1][x] != '*') y--;
-               y-=3;
+               System.out.println("(" + x+" " + y + ")");
+               if (Map1.level1Map[(y-step)/32][(x+26)/32] == '.' ) {
+                   y-=step;
+                   int temp = x % 32;
+                   if (temp >= 20) x = ((x/32) + 1) *32 + saiso;
+                   else if (temp <= 10) x = (x/32) * 32 + saiso;
+               }
                break;
            case 4:
                img = Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1,Sprite.player_down_2,
                        y, 20).getFxImage();
-               //if (y < 11 && Map1.level1Map[y+1][x] != '#' && Map1.level1Map[y+1][x] != '*') y++;
-               y+=3;
+               System.out.println("(" + x+" " + y + ")");
+               if (  Map1.level1Map[(y +32)/32][(x+26)/32] == '.' &&Map1.level1Map[(y +32)/32][(x)/32] == '.')  {
+                   y += step;
+                   int temp = x % 32;
+                   if (temp >= 20) x = ((x/32) + 1) *32 + saiso;
+                   else if (temp <= 10) x = (x/32) * 32 + saiso;
+               }
                break;
        }
+    }
+
+    @Override
+    public int getX() {
+        return x;
     }
 }

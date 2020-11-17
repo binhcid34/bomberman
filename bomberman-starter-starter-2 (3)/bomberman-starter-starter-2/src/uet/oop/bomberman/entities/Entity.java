@@ -27,4 +27,5 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
+    public abstract int getX();
 }

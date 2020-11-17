@@ -12,4 +12,9 @@ public class Wall extends Entity {
     public void update() {
 
     }
+
+    @Override
+    public int getX() {
+        return 0;
+    }
 }
