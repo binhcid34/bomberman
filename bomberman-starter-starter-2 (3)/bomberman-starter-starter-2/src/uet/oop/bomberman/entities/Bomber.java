@@ -21,7 +21,6 @@ public class Bomber extends Entity {
            case 1:
                img = Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1,Sprite.player_right_2,
                        x,20).getFxImage();
-                System.out.println("(" + x+" " + y + ")");
               if ( Map1.level1Map[(y+26)/32][(x+28)/32] == '.' &&Map1.level1Map[(y)/32][(x+28)/32] == '.') {
                   x += step;
                   int temp = y % 32;
@@ -33,7 +32,6 @@ public class Bomber extends Entity {
            case 2:
                img = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1,Sprite.player_left_2,
                        x, 20).getFxImage();
-               System.out.println("(" + x+" " + y + ")");
                if (Map1.level1Map[(y+26)/32][(x-step)/32] == '.' ) {
                    x-=step;
                    int temp = y % 32;
@@ -44,7 +42,6 @@ public class Bomber extends Entity {
            case 3:
                img = Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1,Sprite.player_up_2,
                        y, 20).getFxImage();
-               System.out.println("(" + x+" " + y + ")");
                if (Map1.level1Map[(y-step)/32][(x+26)/32] == '.' ) {
                    y-=step;
                    int temp = x % 32;
@@ -55,7 +52,6 @@ public class Bomber extends Entity {
            case 4:
                img = Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1,Sprite.player_down_2,
                        y, 20).getFxImage();
-               System.out.println("(" + x+" " + y + ")");
                if (  Map1.level1Map[(y +32)/32][(x+26)/32] == '.' &&Map1.level1Map[(y +32)/32][(x)/32] == '.')  {
                    y += step;
                    int temp = x % 32;
@@ -70,4 +66,10 @@ public class Bomber extends Entity {
     public int getX() {
         return x;
     }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
 }

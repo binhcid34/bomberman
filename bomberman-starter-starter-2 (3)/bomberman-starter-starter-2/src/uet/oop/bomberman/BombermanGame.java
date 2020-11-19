@@ -15,6 +15,8 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BombermanGame extends Application {
 
@@ -66,22 +68,46 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.RIGHT)) {
                 Bomber.check = 1;
-                System.out.println("Right");
-                System.out.print(timer);
 
             }
             if (e.getCode().equals(KeyCode.LEFT)) {
                 Bomber.check = 2;
-
-                System.out.println("Left");
             }
             if (e.getCode().equals(KeyCode.UP)) {
                 Bomber.check = 3;
-                System.out.println("Up");
             }
             if (e.getCode().equals(KeyCode.DOWN)){
                 Bomber.check = 4;
-                System.out.println("Down");
+            }
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                Bomb.isBomb = true;
+                int x_bomb =bomberman.getX()/32;
+                int y_bomb =bomberman.getY( )/32;
+                Bomb bomb = new Bomb(bomberman.getX()/32, bomberman.getY( )/32, Sprite.bomb.getFxImage());
+                entities.add(bomb);
+                stillObjects.add(bomb);
+                bomb.chance();
+                Flame flame = new Flame(x_bomb,y_bomb,Sprite.bomb_exploded1.getFxImage( ));
+                Timer myTimer = new Timer( );
+                myTimer.schedule(new TimerTask( ) {
+                    @Override
+                    public void run() {
+                        entities.remove(bomb);
+                        stillObjects.remove(bomb);
+                        entities.add(flame);
+                        stillObjects.add(flame);
+                    }
+                },4000);
+                Timer timer1 = new Timer(  );
+                timer1.schedule(new TimerTask( ) {
+                    @Override
+                    public void run() {
+                        stillObjects.remove(flame);
+                        entities.remove(flame);
+                    }
+                },100);
+
+
             }
         });
         scene.setOnKeyReleased(e -> {
@@ -97,6 +123,9 @@ public class BombermanGame extends Application {
             }
             if (e.getCode().equals(KeyCode.DOWN)){
                 Bomber.check = 0;
+            }
+            if (e.getCode().equals(KeyCode.ENTER)){
+                Bomb.isBomb = false;
             }
         });
     }

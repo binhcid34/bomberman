@@ -28,4 +28,6 @@ public abstract class Entity {
     }
     public abstract void update();
     public abstract int getX();
+    public abstract int getY();
+
 }
