@@ -22,7 +22,6 @@ public class BombermanGame extends Application {
 
     public static final int WIDTH = 31     ;
     public static final int HEIGHT = 13;
-
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -81,29 +80,39 @@ public class BombermanGame extends Application {
             }
             if (e.getCode().equals(KeyCode.ENTER) || e.getCode().equals(KeyCode.SPACE)) {
                 Bomb.isBomb = true;
-                int x_bomb =bomberman.getX()/32;
-                int y_bomb =bomberman.getY( )/32;
+                List<Entity> flameList = new ArrayList<>();
+                int a =bomberman.getX()/32;
+                int b =bomberman.getY( )/32;
                 Bomb bomb = new Bomb(bomberman.getX()/32, bomberman.getY( )/32, Sprite.bomb.getFxImage());
                 entities.add(bomb);
                 stillObjects.add(bomb);
                 bomb.chance();
-                Flame flame = new Flame(x_bomb,y_bomb,Sprite.bomb_exploded1.getFxImage( ));
+                Entity ex = new Flame(a, b, Sprite.bomb_exploded.getFxImage());
+                Entity r_ex = new Flame(a + 1, b, Sprite.explosion_horizontal_right_last.getFxImage());
+                Entity l_ex = new Flame(a - 1, b, Sprite.explosion_horizontal_left_last.getFxImage());
+                Entity u_ex = new Flame(a, b - 1, Sprite.explosion_vertical_top_last.getFxImage());
+                Entity d_ex = new Flame(a, b + 1, Sprite.explosion_vertical_down_last.getFxImage());
+                flameList.add(ex);
                 Timer myTimer = new Timer( );
                 myTimer.schedule(new TimerTask( ) {
                     @Override
                     public void run() {
                         entities.remove(bomb);
                         stillObjects.remove(bomb);
-                        entities.add(flame);
-                        stillObjects.add(flame);
+                        if (Map1.level1Map[b][a + 1] != '#') flameList.add(r_ex);
+                        if (Map1.level1Map[b][a - 1] != '#')   flameList.add(l_ex);
+                        if (Map1.level1Map[b - 1][a] != '#') flameList.add(u_ex);
+                        if (Map1.level1Map[b + 1][a] != '#') flameList.add(d_ex);
+                        entities.addAll(flameList);
+                        stillObjects.addAll(flameList);
                     }
                 },4000);
                 Timer timer1 = new Timer(  );
                 timer1.schedule(new TimerTask( ) {
                     @Override
                     public void run() {
-                        stillObjects.remove(flame);
-                        entities.remove(flame);
+                        stillObjects.remove(flameList);
+                        entities.remove(flameList);
                     }
                 },100);
 
