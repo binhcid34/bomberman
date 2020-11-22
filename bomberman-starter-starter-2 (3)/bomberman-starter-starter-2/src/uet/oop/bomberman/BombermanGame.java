@@ -79,7 +79,7 @@ public class BombermanGame extends Application {
             if (e.getCode().equals(KeyCode.DOWN)){
                 Bomber.check = 4;
             }
-            if (e.getCode().equals(KeyCode.ENTER)) {
+            if (e.getCode().equals(KeyCode.ENTER) || e.getCode().equals(KeyCode.SPACE)) {
                 Bomb.isBomb = true;
                 int x_bomb =bomberman.getX()/32;
                 int y_bomb =bomberman.getY( )/32;

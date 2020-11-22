@@ -29,6 +29,8 @@ public class Flame extends Entity{
     public int getY() {
         return 0;
     }
+    public void flamesegement() {
 
+    }
 
 }
