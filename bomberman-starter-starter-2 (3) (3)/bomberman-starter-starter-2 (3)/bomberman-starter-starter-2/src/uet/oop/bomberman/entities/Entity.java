@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
+
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
@@ -27,6 +28,7 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
+    public abstract boolean collide(Entity e);
     public abstract int getX();
     public abstract int getY();
 

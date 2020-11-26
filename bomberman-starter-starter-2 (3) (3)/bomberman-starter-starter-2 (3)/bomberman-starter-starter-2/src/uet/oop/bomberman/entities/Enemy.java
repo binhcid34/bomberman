@@ -2,18 +2,13 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 
-public class Brick extends Entity{
+public abstract class Enemy extends Entity{
+    public Enemy(int x , int y, Image img){
+        super(x,y,img);
+    }
     @Override
     public void update() {
 
-    }
-    public Brick(int x,int y, Image img){
-        super(x,y,img);
-    }
-
-    @Override
-    public int getX() {
-        return 0;
     }
 
     @Override
@@ -21,5 +16,10 @@ public class Brick extends Entity{
         return 0;
     }
 
+    @Override
+    public int getX() {
+        return 0;
+    }
+    public abstract void kill();
 
 }

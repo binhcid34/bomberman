@@ -11,9 +11,16 @@ import java.util.TimerTask;
 public class Bomb extends Entity{
     public static boolean isBomb = false;
     public static boolean _exploded = false;
+    public static int canPutBomb = 1;
     @Override
     public void update() {
     }
+
+    @Override
+    public boolean collide(Entity e) {
+        return false;
+    }
+
     public Bomb (int x, int y, Image img ) {
         super(x,y,img);
     }
@@ -58,4 +65,6 @@ public class Bomb extends Entity{
     public void exploded() {
         _exploded = true;
     }
+
+
 }
