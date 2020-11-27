@@ -37,6 +37,8 @@ public class BombermanGame extends Application {
     private List<Bomb> bombList = new ArrayList<>();
     private List<Item> itemList = new ArrayList<>();
     public static List<Enemy> enemyList = new ArrayList<>();
+    public static List<Portal> portalList = new ArrayList<>(  );
+
     public static int numberBomb = 0;
     private static int _itemSpeed = 0;
     private static int _itemFlame = 0;
@@ -46,7 +48,7 @@ public class BombermanGame extends Application {
     public static int timesUseItemFlame = 0;
     public static int timesUseItemBomb = 0;
 
-
+    public static int level = 1;
     public static void main(String[] args) throws IOException {
             Map1.insertFromFile( );
             Application.launch(BombermanGame.class);
@@ -73,7 +75,7 @@ public class BombermanGame extends Application {
         enemyList.add(ballom2);
         entities.add(bomberman);
         entities.add(ballom1);
-        entities.add(ballom2);
+       entities.add(ballom2);
 
 
         scene.setOnKeyPressed(e -> {
@@ -143,6 +145,9 @@ public class BombermanGame extends Application {
                                                         } else if (finalJ == 37 || finalJ == 25) {
                                                             itemList.add(new Item(a, b, Sprite.powerup_flames.getFxImage()));
                                                             _itemFlame ++;
+                                                        }
+                                                        else if (finalJ == 16) {
+                                                            portalList.add(new Portal(a, b, Sprite.portal.getFxImage()));
                                                         }
                                                         else {
                                                             //brickList.remove(finalJ);
@@ -216,6 +221,7 @@ public class BombermanGame extends Application {
                             if (x_ == a_ && y_ == b_) {
                                 enemyList.get(j).kill();
                                 enemyList.remove(j);
+                                //timer1.cancel();
                                 // entities.remove(enemyList.get(j));
 
                             }
@@ -269,7 +275,21 @@ public class BombermanGame extends Application {
                         }
                     }
                 }
+            if (!portalList.isEmpty()&& enemyList.isEmpty() && bomberman.getX()/32 == portalList.get(0).getX()/32 && bomberman.getY()/32 == portalList.get(0).getY()/32) {
+                level = 2;
+                try {
+                    Map1.insertFromFile();
+                    this.start();
+                    createMap();
+                    entities.clear();
+                    stillObjects.clear();
+                    brickList.clear();
+                    portalList.clear();
 
+                } catch (IOException e) {
+                    e.printStackTrace( );
+                }
+            }
             }
         };
         timer.start();
@@ -306,9 +326,11 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         brickList.forEach(g -> g.render(gc));
+        portalList.forEach(g -> g.render(gc));
         if (!itemList.isEmpty()) itemList.forEach(g -> g.render(gc));
         if (!bombList.isEmpty()) bombList.forEach(g -> g.render(gc));
         if (!explosivesList.isEmpty()) explosivesList.forEach(g -> g.render(gc));
+        if (!enemyList.isEmpty()) enemyList.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 }

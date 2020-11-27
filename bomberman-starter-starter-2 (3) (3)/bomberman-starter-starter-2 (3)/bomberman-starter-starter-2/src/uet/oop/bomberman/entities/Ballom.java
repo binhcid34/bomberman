@@ -8,6 +8,8 @@ import uet.oop.bomberman.graphics.Map1;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Ballom  extends Enemy{
     private int step = 1;
@@ -106,6 +108,14 @@ public class Ballom  extends Enemy{
     public void kill(){
         img = Sprite.balloom_dead.getFxImage( );
         this._isdead = true;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask( ) {
+            @Override
+            public void run() {
+                img = null;
+            }
+        },1000);
+
     }
     public void collid(){
     }
