@@ -19,13 +19,10 @@ import uet.oop.bomberman.graphics.Map1;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class BombermanGame extends Application {
-
+    protected Random random = new Random();
     public static final int WIDTH = 31     ;
     public static final int HEIGHT = 13;
     private GraphicsContext gc;
@@ -49,12 +46,12 @@ public class BombermanGame extends Application {
     public static int timesUseItemBomb = 0;
 
     public static int level = 1;
+
+    public static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
     public static void main(String[] args) throws IOException {
             Map1.insertFromFile( );
             Application.launch(BombermanGame.class);
     }
-
-
     @Override
     public void start(Stage stage) {
         // Tao Canvas
@@ -68,15 +65,14 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
-        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
         Enemy ballom1 = new Ballom(12 , 1 , Sprite.balloom_left3.getFxImage());
         Enemy ballom2 = new Ballom(9 , 5 , Sprite.balloom_left3.getFxImage());
+
         enemyList.add(ballom1);
         enemyList.add(ballom2);
         entities.add(bomberman);
         entities.add(ballom1);
-       entities.add(ballom2);
-
+        entities.add(ballom2);
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.RIGHT)) {
@@ -95,10 +91,17 @@ public class BombermanGame extends Application {
                 if (numberBomb < Bomb.canPutBomb){
                     numberBomb++;
                     Bomb.isBomb = true;
-                    Bomb bomb = new Bomb(entities.get(0).getX() / 32, entities.get(0).getY() / 32, Sprite.bomb.getFxImage());
+                    Bomb bomb = new Bomb(bomberman.getX() / 32, bomberman.getY() / 32, Sprite.bomb.getFxImage());
                     //entities.add(bomb);
                     //stillObjects.add(bomb);
                     bombList.add(bomb);
+                    Timer timer10 = new Timer();
+                    timer10.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Map1.level1Map[bomb.getY()/32][bomb.getX()/32] = '#';
+                        }
+                    },500);
                     bomb.chance();
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
@@ -158,6 +161,7 @@ public class BombermanGame extends Application {
                                             }
                                         }
                                     }
+                                    Map1.level1Map[b][a] = '.';
                                     explosivesList.clear();
                                     numberBomb--;
                                 }
@@ -166,7 +170,7 @@ public class BombermanGame extends Application {
 
                         }
 
-                    }, 4000);
+                    }, 3000);
 
                 }
             }
@@ -200,7 +204,6 @@ public class BombermanGame extends Application {
             public void handle(long l) {
                 update();
                 render();
-
                 for(int i = 0; i <enemyList.size();i++ ) {
                     int a_ = enemyList.get(i).getX()/32;
                     int b_ = enemyList.get(i).getY()/32;
@@ -235,6 +238,9 @@ public class BombermanGame extends Application {
                         _itemSpeed--;
                         timesUseItemSpeed++;
                         System.out.println( "speed : " + timesUseItemSpeed);
+                        if (timesUseItemSpeed == 0){
+                            Bomber.step = 2;
+                        }
                         if(timesUseItemSpeed == 1){
                             Bomber.step = 4;
                         }
@@ -251,6 +257,9 @@ public class BombermanGame extends Application {
                         _itemFlame--;
                         timesUseItemFlame++;
                         System.out.println("flame :" + timesUseItemFlame);
+                        if (timesUseItemFlame == 0){
+                            Flame.widen = 0;
+                        }
                         if(timesUseItemFlame == 1){
                             Flame.widen = 1;
                         }
@@ -267,6 +276,9 @@ public class BombermanGame extends Application {
                         _itemBomb--;
                         timesUseItemBomb++;
                         System.out.println("bomb : " + timesUseItemBomb);
+                        if (timesUseItemBomb == 0){
+                            Bomb.canPutBomb = 1;
+                        }
                         if (timesUseItemBomb == 1){
                             Bomb.canPutBomb = 2;
                         }
@@ -275,26 +287,45 @@ public class BombermanGame extends Application {
                         }
                     }
                 }
-            if (!portalList.isEmpty()&& enemyList.isEmpty() && bomberman.getX()/32 == portalList.get(0).getX()/32 && bomberman.getY()/32 == portalList.get(0).getY()/32) {
-                level = 2;
-                try {
-                    Map1.insertFromFile();
-                    this.start();
-                    createMap();
-                    entities.clear();
+                if (!portalList.isEmpty() && bomberman.getX()/32 == portalList.get(0).getX()/32 && bomberman.getY()/32 == portalList.get(0).getY()/32){
+                    level=2;
+                    portalList.remove(0);
+                    try {
+                        Map1.insertFromFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     stillObjects.clear();
                     brickList.clear();
-                    portalList.clear();
-
-                } catch (IOException e) {
-                    e.printStackTrace( );
+                    bombList.clear();
+                    itemList.clear();
+                    entities.clear();
+                    timesUseItemBomb = 0;
+                    timesUseItemFlame = 0;
+                    timesUseItemSpeed = 0;
+                    _itemSpeed = 0;
+                    _itemFlame = 0;
+                    _itemBomb = 0;
+                    Flame.widen = 0;
+                    this.start();
+                    bomberman.setAgain();
+                    //entities.clear();
+                    //Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+                    entities.add(bomberman);
+                    Boss boss = new Boss(10,5,Sprite.minvo_right2.getFxImage( ));
+                    enemyList.add(boss);
+                    entities.add(boss);
+                    createMap();
+                    update();
+                    render();
                 }
-            }
+                /*int stepboss = new Aienemy(32,32,boss.getY()/32 * 31 + boss.getX()/ 32).getLocations();
+                boss.stepNextBoss = stepboss;
+                System.out.println(stepboss);*/
             }
         };
         timer.start();
         createMap();
-
         render();
 
     }
@@ -319,6 +350,7 @@ public class BombermanGame extends Application {
     public void update() {
         entities.forEach(Entity::update);
         bombList.forEach(Bomb::update);
+       // enemyList.forEach(Enemy::update);
 
     }
 

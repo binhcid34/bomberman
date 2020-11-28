@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 //import uet.oop.bomberman.entities.enemy.ai.AI;
 //import uet.oop.bomberman.entities.enemy.ai.AILow;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Map1;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -39,6 +40,12 @@ public class Ballom  extends Enemy{
 
     @Override
     public void update() {
+        /*int xb = x/32;
+        int yb = y /32;
+        int l = new Aienemy(32,32, yb * 31 +xb).getLocations();
+        int i = l / 31;
+        int j = l % 31;
+        System.out.println(j+" " + i + "   |   "+ xb + " " + yb);*/
         if (this._isdead == false ){
             count ++ ;
             if (count < temp) {

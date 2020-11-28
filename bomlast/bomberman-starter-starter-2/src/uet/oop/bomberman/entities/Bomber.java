@@ -24,7 +24,7 @@ public class Bomber extends Entity {
                 img = Sprite.player_right.getFxImage();
                 img = Sprite.movingSprite(Sprite.player_right_1,Sprite.player_right_2, x, 20).getFxImage();
                 //System.out.println("(" + x+" " + y + ")");
-                if ( Map1.level1Map[(y+26)/32][(x+28)/32] == '.' &&Map1.level1Map[(y+2)/32][(x+28)/32] == '.') {
+                if ( Map1.level1Map[(y+26)/32][(x+28)/32] == '.' &&Map1.level1Map[(y+step)/32][(x+28)/32] == '.') {
                     x += step;
                     int temp = y % 32;
                     if (temp >= 20) y = ((y/32) + 1) *32;
@@ -36,7 +36,7 @@ public class Bomber extends Entity {
                 img = Sprite.player_left_1.getFxImage();
                 img = Sprite.movingSprite( Sprite.player_left_1,Sprite.player_left_2, x, 20).getFxImage();
                 //System.out.println("(" + x+" " + y + ")");
-                if (Map1.level1Map[(y+26)/32][(x-2)/32] == '.' && Map1.level1Map[(y+2)/32][(x-2)/32]=='.') {
+                if (Map1.level1Map[(y+26)/32][(x-step)/32] == '.' && Map1.level1Map[(y+step)/32][(x-step)/32]=='.') {
                     x-=step;
                     int temp = y % 32;
                     if (temp >= 20) y = ((y/32) + 1) *32 ;
@@ -47,7 +47,7 @@ public class Bomber extends Entity {
                 img = Sprite.player_up.getFxImage();
                 img = Sprite.movingSprite(Sprite.player_up_1,Sprite.player_up_2, y, 20).getFxImage();
                 //System.out.println("(" + x+" " + y + ")");
-                if ( Map1.level1Map[(y-2)/32][(x+26)/32] == '.' && Map1.level1Map[(y )/32][(x)/32] == '.'){
+                if ( Map1.level1Map[(y-step)/32][(x+26)/32] == '.' && Map1.level1Map[(y )/32][(x)/32] == '.'){
                     y-=step;
                     int temp = x % 32;
                     if (temp >= 20) x = ((x/32) + 1) *32 + saiso;
@@ -58,7 +58,7 @@ public class Bomber extends Entity {
                 img = Sprite.player_down.getFxImage();
                 img = Sprite.movingSprite(Sprite.player_down_1,Sprite.player_down_2,y, 20).getFxImage();
                 //System.out.println("(" + x+" " + y + ")");
-                if (  Map1.level1Map[(y +30)/32][(x+26)/32] == '.' &&Map1.level1Map[(y +30)/32][(x)/32] == '.')  {
+                if (  Map1.level1Map[(y +32 - step)/32][(x+26)/32] == '.' &&Map1.level1Map[(y +32 - step)/32][(x)/32] == '.')  {
                     y += step;
                     int temp = x % 32;
                     if (temp >= 20) x = ((x/32) + 1) *32 +saiso;
@@ -106,5 +106,8 @@ public class Bomber extends Entity {
         }
         return false;
     }
-
+    public void setAgain(){
+        x = 32;
+        y = 32;
+    }
 }
