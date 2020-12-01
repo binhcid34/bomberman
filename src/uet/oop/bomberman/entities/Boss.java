@@ -45,7 +45,7 @@ public class Boss extends Enemy{
             int l = new Aienemy(bombermanX,bombermanY, yb * 31 +xb).getLocations();
             int i = l / 31 * 32;
             int j = l % 31  * 32;
-            System.out.println(i+ " " +j + "    |   " + x + " " + y);
+            //System.out.println(i+ " " +j + "    |   " + x + " " + y);
             if( i != 0 && j != 0){
                 if (x < j && Map1.level1Map[(y+26)/32][(x+28)/32] == '.' &&Map1.level1Map[(y+step)/32][(x+28)/32] == '.') {
                     img = Sprite.minvo_right1.getFxImage();

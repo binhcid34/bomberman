@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -51,6 +52,7 @@ public class BombermanGame extends Application {
     public static int level = 1;
     public static int numberDead = 0;
     public static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+    public static boolean loop = true;
     public static void main(String[] args) throws IOException {
             Map1.insertFromFile( );
             Application.launch(BombermanGame.class);
@@ -61,7 +63,7 @@ public class BombermanGame extends Application {
         ImageView splashImage = new ImageView(new Image(getClass().getResourceAsStream("/textures/l1.png")));
         splashLayout.getChildren().add(splashImage);
         Scene scene1 = new Scene(splashLayout, Color.TRANSPARENT);
-        stage.initStyle(StageStyle.TRANSPARENT);
+
         stage.setScene(scene1);
         stage.show();
         PauseTransition pause = new PauseTransition(Duration.seconds(4));
@@ -109,6 +111,8 @@ public class BombermanGame extends Application {
                 }
                 if (e.getCode().equals(KeyCode.ENTER) || e.getCode().equals(KeyCode.SPACE)) {
                     if (numberBomb < Bomb.canPutBomb){
+                        MediaMusic mediaMusic = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\BOM_SET.wav",0.1);
+                        mediaMusic.play();
                         numberBomb++;
                         Bomb.isBomb = true;
                         Bomb bomb = new Bomb(bomberman.getX() / 32, bomberman.getY() / 32, Sprite.bomb.getFxImage());
@@ -127,6 +131,8 @@ public class BombermanGame extends Application {
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
+                                MediaMusic mediaMusicEx = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\BOM_11_M.wav", 0.4);
+                                mediaMusicEx.play();
                                 int a = bombList.get(0).getX() / 32;
                                 int b = bombList.get(0).getY() / 32;
                                 bombList.remove(0);
@@ -181,6 +187,7 @@ public class BombermanGame extends Application {
                                                 }
                                             }
                                         }
+
                                         Map1.level1Map[b][a] = '.';
                                         explosivesList.clear();
                                         numberBomb--;
@@ -219,6 +226,7 @@ public class BombermanGame extends Application {
                 public void handle(long l) {
                     update();
                     render();
+
                     for(int i = 0; i <enemyList.size();i++ ) {
                         int a_ = enemyList.get(i).getX()/32;
                         int b_ = enemyList.get(i).getY()/32;
@@ -249,6 +257,8 @@ public class BombermanGame extends Application {
                     for (int i = 0; i< itemList.size();i++){
                         if (!itemList.isEmpty() && bomberman.getX() == itemList.get(i).getX() && bomberman.getY() == itemList.get(i).getY() && _itemSpeed != 0 ){
                             itemList.set(i, new Item(itemList.get(i).getX()/32, itemList.get(i).getY()/32 , Sprite.grass.getFxImage()));
+                            MediaMusic mediaMusicitem = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\Item.wav",0.5);
+                            mediaMusicitem.play();
                             itemList.remove(i);
                             _itemSpeed--;
                             timesUseItemSpeed++;
@@ -267,6 +277,8 @@ public class BombermanGame extends Application {
                         else if ( !itemList.isEmpty() && bomberman.getX()/32 == itemList.get(i).getX()/32 && bomberman.getY()/32 == itemList.get(i).getY()/32 && _itemFlame != 0) {
                             int a = itemList.get(i).getX()/32;
                             int b = itemList.get(i).getY()/32;
+                            MediaMusic mediaMusicitem = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\Item.wav",0.5);
+                            mediaMusicitem.play();
                             itemList.set(i, new Item(a, b, Sprite.grass.getFxImage()));
                             itemList.remove(i);
                             _itemFlame--;
@@ -286,6 +298,8 @@ public class BombermanGame extends Application {
                         else if( !itemList.isEmpty() && bomberman.getX()/32 == itemList.get(i).getX()/32 && bomberman.getY()/32 == itemList.get(i).getY()/32 && _itemBomb != 0) {
                             int a = itemList.get(i).getX()/32;
                             int b = itemList.get(i).getY()/32;
+                            MediaMusic mediaMusicitem = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\Item.wav",0.5);
+                            mediaMusicitem.play();
                             itemList.set(i, new Item(a, b, Sprite.grass.getFxImage()));
                             itemList.remove(i);
                             _itemBomb--;
@@ -302,7 +316,7 @@ public class BombermanGame extends Application {
                             }
                         }
                     }
-                    if (!portalList.isEmpty() && bomberman.getX()/32 == portalList.get(0).getX()/32 && bomberman.getY()/32 == portalList.get(0).getY()/32){
+                    if ( enemyList.size() == 0  && bomberman.getX()/32 == portalList.get(0).getX()/32 && bomberman.getY()/32 == portalList.get(0).getY()/32){
                         try {
                             Stage stage1 = new Stage( );
                             Pane splashLayout = new VBox( );
@@ -344,6 +358,13 @@ public class BombermanGame extends Application {
                                 Boss boss = new Boss(10, 5, Sprite.minvo_right2.getFxImage( ));
                                 enemyList.add(boss);
                                 entities.add(boss);
+                                Enemy balloommap2 = new Ballom(9,5 , Sprite.balloom_right2.getFxImage( ));
+                                enemyList.add(balloommap2);
+                                entities.add(balloommap2);
+                                Enemy onealmap2 = new Oneal(21,9,Sprite.oneal_right1.getFxImage( ));
+                                enemyList.add(onealmap2);
+                                entities.add(onealmap2);
+
                                 createMap( );
                                 update( );
                                 render( );
@@ -354,8 +375,17 @@ public class BombermanGame extends Application {
                         }
 
                     }
-
-                    if (bomberman._alive == false && numberDead == 0) {
+                    MediaMusic mediaMusicdead = new MediaMusic("C:\\Users\\binhc\\Downloads\\bomberman-starter-starter-2 (4)\\bomberman-starter-starter-2\\res\\sound\\dead.wav", 0.2);
+                    if (bomberman._alive == false && numberDead ==0 ) {
+                        numberDead ++;
+                        mediaMusicdead.play();
+                    }
+                    if (bomberman._alive == false) {
+                        numberDead++;
+                    }
+                    if (numberDead == 80) {
+                        mediaMusicdead.stop();
+                        bomberman._alive= true;
                         PauseTransition pause1 = new PauseTransition(Duration.seconds(0));
                         pause1.setOnFinished(event1 -> {
                             mainStage.close();
@@ -375,7 +405,6 @@ public class BombermanGame extends Application {
                         pause1.play();
                         pause1.stop();
                     }
-
                 /*int stepboss = new Aienemy(32,32,boss.getY()/32 * 31 + boss.getX()/ 32).getLocations();
                 boss.stepNextBoss = stepboss;
                 System.out.println(stepboss);*/
@@ -400,6 +429,7 @@ public class BombermanGame extends Application {
             fiveSecondsWonder.play();
         });
         pause.play();
+
 
     }
 
